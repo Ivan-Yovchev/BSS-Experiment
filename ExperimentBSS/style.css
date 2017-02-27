@@ -1,0 +1,38 @@
+﻿html {
+    margin: 0;
+    height: 100%;
+    font-size: xx-large;
+    height: 100%;
+}
+
+body {
+    margin-top: 3%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 100%;
+}
+
+#main_window {
+    text-align: center;
+    line-height: 300px;
+    width: 100%;
+    height: 300px;
+    border: 1px solid black;
+    font-size: 900%;
+    font-family: Arial;
+}
+
+#button_panel {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.group_button {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: 20%;
+    height: 27px;
+}
