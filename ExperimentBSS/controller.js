@@ -1,13 +1,13 @@
 ﻿$(function() {
     var loadingTime = 4000;
-    var timeOut = 750;
+    var symbolInBetweentime = 900;
+
+    var timer = 0;
 
     var stimulusLength = 3;
     var digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     var symbols = ['+', '$', '%', '!', '#', '&', '@', '?', '*', '~'];
-
-    var timer = 0;
 
     $(".group_button").click(function () {
         var group = $(this).val();
@@ -26,6 +26,10 @@
         // prep canvas for the upcoming visual stimuli
         setTimeout(prepCanvasForStimuli, loadingTime);
         setTimeout(showVisualStimuli, loadingTime, stimuli);
+
+        // after this delay the symbols have been flashed on the screen
+        // and next steps must be taken to get the user input
+        setTimeout(prepCanvasForUserInput, loadingTime + (2 * (stimuli.length + 1) * symbolInBetweentime));
     });
 
     function showLoadingBar() {
@@ -35,32 +39,19 @@
             color: '#3498db',
             trailColor: '#d3d3d3',
             strokeWidth: 6,
-            trailWidth: 1,
-            text: {
-                autoStyleContainer: false
-            },
-            from: { color: '#3498db', width: 6 },
-            to: { color: '#3498db', width: 6 },
-            // Set default step function for all animate calls
-            step: function (state, circle) {
-                circle.path.setAttribute('stroke', state.color);
-                circle.path.setAttribute('stroke-width', state.width);
-
-                var value = Math.round(circle.value() * 100);
-                if (value === 0) {
-                    circle.setText('');
-                } else {
-                    circle.setText(value);
-                }
-
-            }
+            trailWidth: 1
         });
-        bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
         bar.animate(1);
     }
 
     function prepCanvasForStimuli() {
         $("#container").hide();
+    }
+
+    function prepCanvasForUserInput() {
+        timer = 0;
+        $("#text_window").hide();
+        alert("done");
     }
 
     function showVisualStimuli(string) {
@@ -75,15 +66,14 @@
     function presentSymbol(window, string, i) {
         setTimeout(function () {
             if (timer % 2 == 0) {
-                window.text(string[parseInt(timer/2)]);
+                window.text(string[parseInt(i / 2)]);
+                timer++;
             }
             else {
-
                 window.text(' ');
+                timer++;
             }
-
-            timer++;
-        }, (i + 1) * timeOut);
+        }, (i + 1) * symbolInBetweentime);
     }
 
     function generateRandomStringForGroup(group) {
