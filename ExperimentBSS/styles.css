@@ -12,6 +12,11 @@ body {
     background-color: black;
 }
 
+body.disable-mouse {
+    user-select: none;
+    cursor: none;
+}
+
 #main_window {
     margin: auto;
 }

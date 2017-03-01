@@ -43,6 +43,23 @@ $(function() {
         ]);
     }
 
+    function isEquivalent(s1, s2) {
+        if(s1.length !== s2.length) {
+            return false;
+        }
+        var c, i;
+        while(s1.length > 0 || s2.length > 0) {
+            c = s1.charAt(0);
+            s1 = s1.substr(1);
+            i = s2.indexOf(c);
+            if(i < 0) {
+                return false;
+            }
+            s2 = s2.substr(0, i) + s2.substr(i + 1);
+        }
+        return s1.length === s2.length;
+    }
+
     function runTestChain() {
         var units = {};
         var steps = {
@@ -65,7 +82,7 @@ $(function() {
             });
         }
         function conditionHandle(info) {
-            if(info.source === info.user) {
+            if(isEquivalent(info.source, info.user)) {
                 steps.symbols.setLength(steps.symbols.getLength() + 1);
                 errorCount = 0;
             } else {
@@ -80,8 +97,10 @@ $(function() {
                 units[key] = bssExperiment.config.units[key];
             });
             steps.symbols = createSymbolScreen(units);
+            $('body').addClass('disable-mouse');
             return iteration().then(conditionHandle);
         }).then(function() {
+            $('body').removeClass('disable-mouse');
             return steps.symbols.getLength();
         });
     }

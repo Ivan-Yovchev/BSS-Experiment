@@ -268,15 +268,28 @@
         _onSubmit: {
             value: function(event) {
                 event.preventDefault();
+                $(this._input).on('blur', this._listenerLostFocus);
+                $(this._input).off('input', this._listenerTextChange);
+                $(this._form).off('submit', this._listenerSubmit);
                 this._defer.resolve(this._input.value);
+            }
+        },
+        _onFocusLost: {
+            value: function(event) {
+                event.preventDefault();
+                setTimeout(function() {
+                    $(this._input).focus();
+                }.bind(this), 0);
             }
         },
         run: {
             value: function() {
                 this._listenerTextChange = typeof this._listenerTextChange === 'function' ? this._listenerTextChange : this._onTextChanged.bind(this);
                 this._listenerSubmit = typeof this._listenerSubmit === 'function' ? this._listenerSubmit : this._onSubmit.bind(this);
+                this._listenerLostFocus = typeof this._listenerLostFocus === 'function' ? this._listenerLostFocus : this._onFocusLost.bind(this);
                 $(this._form).on('submit', this._listenerSubmit);
                 $(this._input).on('input', this._listenerTextChange);
+                $(this._input).on('blur', this._listenerLostFocus);
                 this._input.value = '';
                 var promise = namespace.State.prototype.run.apply(this, arguments);
                 $(this._input).focus();
