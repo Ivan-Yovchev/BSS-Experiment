@@ -1,20 +1,35 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta charset="UTF-8">
     <title>Basic Scientific Skills - Experimnet</title>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="progressbar.js"></script>
-    <script src="controller.js"></script>
+    <script type="text/javascript" src="lib/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="lib/progressbar.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/state.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <!-- <script src="controller.js"></script> -->
     <link href="styles.css" rel="stylesheet" />
 </head>
 <body>
-    <div id="main_window">
-        <div id="text_window">Select a group</div>
-        <div id="button_panel">
-            <button id="test" class="group_button" value="1">Group A</button>
-            <button class="group_button" value="2">Group B</button>
-            <button class="group_button" value="3">Group C</button>
-        </div>
+    <div id="group_select_text" class="text">Select a group</div>
+    <div id="group_buttons">
+        <button class="group-button" value="A">Group A</button>
+        <button class="group-button" value="B">Group B</button>
+        <button class="group-button" value="C">Group C</button>
     </div>
+    <div id="textWindow" class="text"></div>
+    <form id="userForm" action="#">
+        <input type="text" name="sequence" id="userEntry" class="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <input type="submit" />
+        <script type="text/javascript">
+            $(function() {
+                $('#userEntry').on('input', function(event) {
+                    event.currentTarget.value = event.currentTarget.value.toUpperCase();
+                });
+            })
+        </script>
+    </form>
+    <div id="experimentOver" class="text">Experiment is over.<br />Please notify the experimenter!</div>
 </body>
 </html>

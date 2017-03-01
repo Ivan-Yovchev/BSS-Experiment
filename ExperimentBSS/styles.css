@@ -1,63 +1,124 @@
 ﻿html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;                        
     right: 0;
-    margin: 0;
-    padding: 0;
     background-color: black;
-}
-
-body {
-    display: inline-flex;
 }
 
 #main_window {
     margin: auto;
 }
 
-#text_window {
-    font-size: 13vmax;
-    font-family: Arial;
-    color: lightgrey;
+#textWindow {
+    font-size: 50vh;
     margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    width: 100vw;
+    line-height: 100vh;
+    height: 100vh;
+    text-align: center;
 }
 
-#button_panel {
-    width: 100%;
+.text {
+    font-family: Arial, sans-serif;
+    color: lightgrey;
+}
+
+#experimentOver {
+    font-size: 10vh;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    text-align: center;
+    height: -webkit-min-content;
+    height: min-content;
+}
+
+#group_select_text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 20vh;
+    font-size: 30vh;
+    margin: auto;
+    text-align: center;
+}
+
+#group_buttons {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20vh;
     display: flex;
     justify-content: space-around;
-    margin-top: 5vmin;
 }
 
-.group_button {
+#group_buttons .group-button {
     display: inline-block;
     margin: 0;
     padding: 0;
-    width: 20vmax;
-    height: 10vmin;
+    width: 20vw;
+    height: 10vh;
     background-color: lightgrey;
     border: 0;
     border-radius: 10px;
-    font-size: 5vmin;
+    font-size: 5vh;
     font-family: Arial;
     transition-duration: 1s;
 }
 
-.group_button:hover {
+#group_buttons .group-button:hover {
     cursor: pointer;
     background-color: white;
     transition-duration: 1s;
 }
 
-button:focus {
+:focus {
     outline:0;
 }
 
-#container {
+.loading {
   margin: 20px;
-  width: 5vmax;
-  height: 5vmax;
-  position: relative;
+  width: 10vmin;
+  height: 10vmin;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+#userEntry {
+    background: transparent;
+    border: 1vmin solid lightgray;
+    border-radius: 5vmin;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 80vw;
+    top: 10vh;
+    padding: 5vmin;
+    margin: auto;
+    font-size: 30vh;
+}
+
+#userForm input[type="submit"] {
+    display: none;
 }
