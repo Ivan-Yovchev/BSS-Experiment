@@ -60,9 +60,10 @@ body.disable-mouse {
     left: 0;
     right: 0;
     top: 20vh;
-    font-size: 30vh;
+    font-size: 28vh;
     margin: auto;
     text-align: center;
+    white-space: nowrap;
 }
 
 #group_buttons {
