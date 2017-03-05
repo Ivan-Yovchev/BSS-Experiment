@@ -6,7 +6,7 @@
         units: {
             digits: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
             letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-            symbols: ['+', '$', '%', '!', '#', '&', '@', '?', '*', '~']
+            symbols: ['+', '$', '(', '%', '!', '#', '&', '@', ')', '*', '=']
         },
         /* Contains the groups and a names of the lists of units used in experiments */
         /* Properties in these arrays must be the same as keys in units objects */
