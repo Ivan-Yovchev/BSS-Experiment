@@ -1,0 +1,336 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;                        
+    right: 0;
+    background-color: black;
+    font-family: Arial, sans-serif;
+    color: lightgrey;
+}
+
+
+body.disable-mouse {
+    user-select: none;
+    cursor: none;
+}
+
+input[type="text"], input[type="password"] {
+    font-size: 5vh;
+    border-radius: 2vmin;
+    border: 1vmin solid lightgrey;
+    background: transparent;
+    padding: 1vmin;
+    outline: none;
+    color: lightgray;
+}
+
+input[type="text"]:-webkit-autofill, input[type="password"]:-webkit-autofill {
+    color: lightgray;
+    background: rgba(250, 255, 189, 0.2);
+}
+
+button, input[type="button"], input[type="submit"], input[type="reset"] {
+    background-color: lightgrey;
+    border: 0;
+    border-radius: 1vmin;
+    font-size: 5vh;
+    font-family: Arial;
+    transition-property: background-color;
+    transition-duration: 1s;
+    cursor: pointer;
+    color: #333;
+    outline: none;
+    padding: 2vh 2vw;
+}
+
+button:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+    background-color: white;
+    transition-duration: 1s;
+}
+
+button.button-privileged, input[type="button"].button-privileged, input[type="submit"].button-privileged, input[type="reset"].button-privileged {
+    background-color: #777;
+    color: #222;
+}
+
+button.button-privileged:hover, input[type="button"].button-privileged:hover, input[type="submit"].button-privileged:hover, input[type="reset"].button-privileged:hover {
+    background-color: #AAA;
+}
+
+.modal-cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.error {
+    color: #FCC;
+}
+
+.form-dialog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 2vmin;
+    border: 1vmin solid lightgrey;
+    width: 50vw;
+    height: min-content;
+    margin: auto;
+    font-size: 4vh;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 2vh 2vw;
+    overflow: hidden;
+    background: #222;
+    z-index: 20;
+}
+
+.form-dialog>.title {
+    text-align: center;
+    flex: 1 1;
+    font-size: 5vh;
+}
+
+.form-dialog>.error {
+    text-align: left;
+    margin: 2vh 0;
+}
+
+.form-dialog>.form-row {
+    display: flex;
+    align-items: center;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    margin: 2vh 0;
+}
+
+.form-dialog>.form-default-row {
+    text-align: center;
+    margin: 2vh 0;
+}
+
+.form-dialog>.form-row>.form-label {
+    flex: 0 0;
+    white-space: nowrap;
+}
+
+.form-dialog>.form-row>.form-element {
+    flex: 1 1;
+    align-self: flex-end;
+    text-align: right;
+    overflow: hidden;
+}
+
+.button-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    white-space: nowrap;
+    width: auto;
+    height: min-content;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
+    justify-content: center;
+    text-align: center;
+}
+
+.button-list.vertical {
+    width: min-content;
+    height: auto;
+    flex-flow: column nowrap;
+}
+
+
+.button-list>button {
+    flex: 1 1;
+    max-width: min-content;
+    margin: 2vh 2vw;
+}
+
+.button-list.vertical>button {
+    max-width: none;
+    max-height: min-content;
+}
+
+#debug {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: 30vh;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#debug .loading-bar {
+    width: 10vmin;
+    height: 10vmin;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#debug .message {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 5vh;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotating {
+  animation: rotating 2s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.information {
+    font-size: 5vh;
+}
+
+.information-row {
+    margin: 1vh 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.information-row>.information-label {
+    margin-right: 2vw;
+}
+
+#prepare {
+    width: 10vmin;
+    height: 10vmin;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#symbolBox {
+    font-size: 40vh;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    width: 100vw;
+    line-height: 100vh;
+    height: 100vh;
+    text-align: center;
+}
+
+#symbolInput input[type="submit"] {
+    display: none;
+}
+
+#symbolInputEntry {
+    background: transparent;
+    border: 1vmin solid lightgray;
+    border-radius: 5vmin;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 80vw;
+    top: 10vh;
+    padding: 5vmin;
+    margin: auto;
+    font-size: 30vh;
+}
+
+#experimentFinished {
+    z-index: 5;
+}
+
+#experimentInterrupted {
+    z-index: 5;
+}
+
+#dataManipulator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    width: min-content;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#dataManipulator .data-control {
+    font-family: Arial, sans-serif;
+    color: #333;
+    font-size: 2vh;
+}
+
+#dataManipulator .controls {
+    margin: 2vh 0;
+    flex: 0 0 5vh;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#dataTable {
+    border-spacing: 0.5vmin;
+}
+
+#dataTable th, #dataTable td {
+    font-family: Arial, sans-serif;
+    color: lightgrey;
+    font-size: 2vh;
+    background: #444;
+    white-space: nowrap;
+    padding: 1vmin;
+}
+
+#dataTable>tbody>tr>td {
+    cursor: pointer;
+}
+
+#dataTable>tbody>tr.selected>td {
+    background: #777;
+}
+
+#dataTable>tbody>tr:hover>td {
+    background: #667;
+}
+
+#dataTable>tbody>tr.selected:hover>td {
+    background: #99A;
+}

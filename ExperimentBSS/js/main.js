@@ -1,109 +1,160 @@
 $(function() {
-    function createGroupScreen() {
-        var options = {
-            elements: [
-                $('#group_select_text')
-            ],
-            map: new Map()
-        };
-        $('#group_buttons>.group-button').each(function(index, button) {
-            var key = $(button).val();
-            var group = bssExperiment.config.groups[key];
-            options.map.set(button, group);
-        });
-        return new bssExperiment.State.Choice(options);
-    }
-
-    function createPrepareScreen() {
-        return new bssExperiment.State.Prepare({
-            time: bssExperiment.config.preparationTime
-        });
-    }
-
-    function createSymbolScreen(units) {
-        return new bssExperiment.State.Symbols({
-            units: units,
-            length: 3,
-            symbolTime: bssExperiment.config.symbolTime,
-            pauseTime: bssExperiment.config.symbolInBetweentime,
-            textBox: $('#textWindow')
-        });
-    }
-
-    function createInputScreen() {
-        return new bssExperiment.State.Input({
-            form: $('#userForm'),
-            inputKey: 'sequence'
-        });
-    }
-
-    function createFinalScreen() {
-        return new bssExperiment.State.Persistent([
-            $('#experimentOver')
-        ]);
-    }
-
-    function isEquivalent(s1, s2) {
-        if(s1.length !== s2.length) {
-            return false;
+    function mainMenuActionHandler(action) {
+        switch(action) {
+            case 'begin':
+                return bssExperiment.stateUserForm().then(function(accept) {
+                    if(!accept) {
+                        return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+                    }
+                    return bssExperiment.leaveExperimenterState().then(function() {
+                        return bssExperiment.stateStartMenu().then(startMenuActionHandler);
+                    });
+                });
+                break;
+            case 'password':
+                return bssExperiment.createExperimenterPassword().then(function(isCreated) {
+                    return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+                });
+                break;
+            case 'data':
+                return bssExperiment.stateExamineData().then(function() {
+                    return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+                });
         }
-        var c, i;
-        while(s1.length > 0 || s2.length > 0) {
-            c = s1.charAt(0);
-            s1 = s1.substr(1);
-            i = s2.indexOf(c);
-            if(i < 0) {
-                return false;
+        return true;
+    }
+
+    function startMenuActionHandler(action) {
+        switch(action) {
+            case 'cancel':
+                return bssExperiment.enterExperimenterState().then(function() {
+                    return bssExperiment.stateUserForm(true).then(function(accept) {
+                        if(accept) {
+                            return bssExperiment.leaveExperimenterState().then(function() {
+                                return bssExperiment.stateStartMenu().then(startMenuActionHandler);
+                            });
+                        } else {
+                            return bssExperiment.enterExperimenterState().then(function() {
+                                return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+                            });
+                        }
+                    });
+                });
+            case 'experiment':
+                return performExperiment().then(function() {
+                    return bssExperiment.enterExperimenterState().then(function() {
+                        localStorage.removeItem('justFinished');
+                        bssExperiment.clearUserCache();
+                        return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+                    });
+                });
+        }
+    }
+
+    function performExperiment() {
+        return bssExperiment.getUser().then(function(user) {
+            var unitKeys = bssExperiment.config.groups[user.group], inputStart, inputEnd;
+            if(!Array.isArray(unitKeys)) {
+                throw new Error('Invalid config [user.group = ' + user.group + ']: No units found for this group');
             }
-            s2 = s2.substr(0, i) + s2.substr(i + 1);
-        }
-        return s1.length === s2.length;
-    }
-
-    function runTestChain() {
-        var units = {};
-        var steps = {
-            group: createGroupScreen(),
-            prepare: createPrepareScreen(),
-            input: createInputScreen(),
-            final: createFinalScreen()
-        };
-        var errorCount = 0;
-        function iteration() {
-            var sequenceInfo = {};
-            return steps.prepare.run().then(function() {
-                return steps.symbols.run();
-            }).then(function(sequence) {
-                sequenceInfo.source = sequence;
-                return steps.input.run();
-            }).then(function(sequence) {
-                sequenceInfo.user = sequence;
-                return sequenceInfo;
-            });
-        }
-        function conditionHandle(info) {
-            if(isEquivalent(info.source, info.user)) {
-                steps.symbols.setLength(steps.symbols.getLength() + 1);
-                errorCount = 0;
-            } else {
-                if(++errorCount >= bssExperiment.config.allowedErrors) {
-                    return steps.final.run();
-                }
-            }
-            return iteration().then(conditionHandle);
-        }
-        steps.group.run().then(function(group) {
-            group.forEach(function(key) {
+            var units = {};
+            unitKeys.forEach(function(key) {
                 units[key] = bssExperiment.config.units[key];
             });
-            steps.symbols = createSymbolScreen(units);
-            $('body').addClass('disable-mouse');
-            return iteration().then(conditionHandle);
-        }).then(function() {
-            $('body').removeClass('disable-mouse');
-            return steps.symbols.getLength();
+            var length = bssExperiment.config.initialLength, errorCount = 0;
+            if(typeof length !== 'number' || !isFinite(length) || length !== parseInt(length) || length < 1) {
+                throw new Error('Invalid config [initialLength = ' + length + '] is not valid initial length: expected valid integer >= 1');
+            }
+            function iteration() {
+                var sequenceInfo = {};
+                return bssExperiment.statePrepare(bssExperiment.config.preparationTime).then(function() {
+                    return bssExperiment.stateSymbolPresentation(units, length);
+                }).then(function(source) {
+                    sequenceInfo.source = source;
+                    inputStart = Date.now();
+                    return bssExperiment.stateSymbolInput();
+                }).then(function(input) {
+                    inputEnd = Date.now();
+                    sequenceInfo.input = input;
+                    return sequenceInfo;
+                });
+            }
+            function conditionHandle(info) {
+                return bssExperiment.insertData({
+                    userId: user.id,
+                    originalString: info.source,
+                    userString: info.input,
+                    inputStart: inputStart + '',
+                    inputEnd: inputEnd + ''
+                }).then(function() {
+                    if(bssExperiment.freeRecallCompare(info.source, info.input)) {
+                        ++length;
+                        errorCount = 0;
+                    } else {
+                        if(++errorCount >= bssExperiment.config.allowedErrors) {
+                            return bssExperiment.leaveExperiment().then(function() {
+                                localStorage.setItem('justFinished', '1');
+                                bssExperiment.clearUserCache();
+                                return bssExperiment.stateFinished();
+                            });
+                        }
+                    }
+                    return iteration().then(conditionHandle);
+                });
+            }
+            return bssExperiment.enterExperiment().then(function() {
+                return iteration().then(conditionHandle);
+            });
+        });
+    };
+
+    function checkState() {
+        if(!bssExperiment.hasExperimentPassword()) {
+            // We have no password, show the main menu
+            return bssExperiment.enterExperimenterState().then(function() {
+                return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+            });
+        }
+        if(localStorage.getItem('justFinished') != null) {
+            return bssExperiment.leaveExperimenterState().then(function() {
+                return bssExperiment.stateFinished().then(function() {
+                    return bssExperiment.enterExperimenterState().then(function() {
+                        localStorage.removeItem('justFinished');
+                        bssExperiment.clearUserCache();
+                        return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+                    });
+                });
+            });
+        }
+        return bssExperiment.getUser().then(function(user) {
+            if(user) {
+                if(bssExperiment.isInExperiment()) {
+                    return bssExperiment.stateInterrupted().then(function() {
+                        return bssExperiment.enterExperimenterState();
+                    }).then(function() {
+                        return bssExperiment.clearDataForUser(user.id);
+                    }).then(function() {
+                        return bssExperiment.leaveExperiment();
+                    }).then(function() {
+                        return bssExperiment.leaveExperimenterState();
+                    }).then(function() {
+                        return bssExperiment.stateStartMenu().then(startMenuActionHandler);
+                    });
+                }
+                return bssExperiment.leaveExperimenterState().then(function() {
+                    return bssExperiment.stateStartMenu().then(startMenuActionHandler);
+                });
+            }
+            return bssExperiment.enterExperimenterState().then(function() {
+                return bssExperiment.stateMainMenu().then(mainMenuActionHandler);
+            });
         });
     }
 
-    runTestChain();
+    bssExperiment.showLoadingMessage('Loading database...');
+    bssExperiment.initDatabase()
+        .then(checkState)
+        .catch(function(err) {
+            bssExperiment.onError(err);
+        });
 });

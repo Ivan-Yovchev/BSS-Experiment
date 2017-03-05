@@ -16,12 +16,14 @@
             C: ['digits', 'letters', 'symbols']
         },
         /* The preparation time between each trial */
-        preparationTime: 4000, /* in milliseconds */
+        preparationTime: 2000, /* in milliseconds */
         /* How long is the pause between two symbols shown */
         symbolInBetweentime: 900, /* in milliseconds */
         /* How long the user will see a symbol */
         symbolTime: 900, /* in milliseconds */
         /* Maximum number of errors before experiment is over */
-        allowedErrors: 2
+        allowedErrors: 2,
+        /* The sequence length from which experiment starts */
+        initialLength: 3
     };
 })(window);
