@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Consolas;
+    src: url('consola.ttf');
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -251,6 +256,7 @@ button.button-privileged:hover, input[type="button"].button-privileged:hover, in
     line-height: 100vh;
     height: 100vh;
     text-align: center;
+    font-family: 'Consolas', sans-serif;
 }
 
 #symbolInput input[type="submit"] {
@@ -258,6 +264,7 @@ button.button-privileged:hover, input[type="button"].button-privileged:hover, in
 }
 
 #symbolInputEntry {
+    font-family: 'Consolas', sans-serif;
     background: transparent;
     border: 1vmin solid lightgray;
     border-radius: 5vmin;
