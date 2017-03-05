@@ -25,62 +25,78 @@
         return Promise.resolve();
     }
 
+    function dataExport() {
+        var table = $('#dataTable').get(0);
+        var thead = table.tHead;
+        var tbody = table.tBodies.item(0);
+        var csvData = [], rowData = [], i, length;
+        $('th', thead).each(function(index, element) {
+            rowData.push(escapeCsv(element.textContent));
+        });
+        csvData.push(rowData.join(','));
+        for(i = 0, length = tbody.rows.length; i < length; ++i) {
+            rowData = $(tbody.rows.item(i)).data('csv');
+            csvData.push(rowData.map(escapeCsv).join(','));
+        }
+        var finalData = csvData.join('\r\n');
+        finalData = 'data:text/csv;charset=utf-8,' + encodeURIComponent(finalData);
+        var exporter =  $('#fileExport').get(0);
+        exporter.href = finalData;
+        exporter.download = 'experiment.csv';
+        exporter.click();
+    }
+
+    function escapeCsv(text) {
+        text = text.trim();
+        if(text.length >= 0 || text.indexOf(',') >= 0 || text.charAt(0)  === '"' || text.charAt(text.length - 1) === '"') {
+            return '"' + text.replace(/"/g, '""') + '"';
+        }
+        return text;
+    }
+
     function loadDatabaseData() {
         return bssExperiment.getData().then(function(data) {
             var table = $('#dataTable').get(0);
             var tbody = table.tBodies.item(0);
             data.forEach(function(row) {
+                var csvArray = [];
                 var tableRow = tbody.insertRow(-1);
                 $(tableRow).data('data', row);
-                var checkBoxCell = tableRow.insertCell(0);
-                var checkBox = $('<input type="checkbox" class="select-item" />').get(0);
-                $(checkBoxCell).append(checkBox);
-                $(checkBox).on('change', onCheckboxChange);
-                var nameCell = tableRow.insertCell(1);
-                nameCell.textContent = row.user && row.user.name || '';
-                var groupCell = tableRow.insertCell(2);
-                groupCell.textContent = row.user && row.user.group || '';
+                var nameCell = tableRow.insertCell(0);
+                csvArray.push(nameCell.textContent = row.user && row.user.name || '');
+                var groupCell = tableRow.insertCell(1);
+                csvArray.push(groupCell.textContent = row.user && row.user.group || '');
+                var testDateCell = tableRow.insertCell(2);
+                csvArray.push(testDateCell.textContent = (row.user && isFinite(parseInt(row.user.testedOn)) && formatDate(new Date(parseInt(row.user.testedOn))) || ''));
                 var testTimeCell = tableRow.insertCell(3);
-                testTimeCell.textContent = (new Date(row.testTimeCell)).toString();
+                csvArray.push(testTimeCell.textContent = (row.user && isFinite(parseInt(row.user.testedOn)) && formatTime(new Date(parseInt(row.user.testedOn))) || ''));
                 var originalSequenceCell = tableRow.insertCell(4);
-                originalSequenceCell.textContent = row.originalString;
+                csvArray.push(originalSequenceCell.textContent = row.originalString);
                 var userSequenceCell = tableRow.insertCell(5);
-                userSequenceCell.textContent = row.userString;
+                csvArray.push(userSequenceCell.textContent = row.userString);
                 var matchCell = tableRow.insertCell(6);
-                matchCell.textContent = row.originalString === row.userString ? 'Yes' : 'No';
-                var inputStartCell = tableRow.insertCell(7);
-                inputStartCell.textContent = row.inputStart;
-                var inputEndCell = tableRow.insertCell(8);
-                inputEndCell.textContent = row.inputEnd;
-                var inputTimeCell = tableRow.insertCell(9);
-                inputTimeCell.textContent = String(row.inputEnd - row.inputStart);
-                $('td', tableRow).on('click', onRowClick);
+                csvArray.push(matchCell.textContent = row.originalString === row.userString ? 'Yes' : 'No');
+                var inputTimeCell = tableRow.insertCell(7);
+                csvArray.push(inputTimeCell.textContent = String(row.inputEnd - row.inputStart));
+                $(tableRow).data('csv', csvArray);
             });
         });
     }
 
-    function onRowClick(event) {
-        if($(event.target).hasClass('select-item')) {
-            return;
+    function zeroFill(s, n) {
+        s = '' + s;
+        while(s.length < n) {
+            s = '0' + s;
         }
-        var row = $(event.currentTarget).parents('tr').get(0);
-        var checkbox = $('.select-item', row).get(0);
-        checkbox.checked = !checkbox.checked;
-        if(checkbox.checked) {
-            $(row).addClass('selected');
-        } else {
-            $(row).removeClass('selected');
-        }
+        return s;
     }
 
-    function onCheckboxChange(event) {
-        var row = $(event.currentTarget).parents('tr').get(0);
-        var checkbox = event.currentTarget;
-        if(checkbox.checked) {
-            $(row).addClass('selected');
-        } else {
-            $(row).removeClass('selected');
-        }
+    function formatDate(date) {
+        return date.getFullYear() + '-' + zeroFill(date.getMonth() + 1, 2) + '-' + zeroFill(date.getDate(), 2);
+    }
+
+    function formatTime(date) {
+        return zeroFill(date.getHours(), 2) + ':' + zeroFill(date.getMinutes(), 2) + ':' + zeroFill(date.getSeconds(), 2);
     }
 
     $(function() {
@@ -95,6 +111,13 @@
             }
             $('#dataManipulator').removeData('await');
             deferred.resolve();
+        });
+        $('#dataExport').on('click', function(event) {
+            var deferred = $('#dataManipulator').data('await');
+            if(!deferred) {
+                return;
+            }
+            dataExport();
         });
     });
 })();
