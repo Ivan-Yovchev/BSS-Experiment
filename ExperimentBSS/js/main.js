@@ -96,10 +96,12 @@ $(function() {
                         errorCount = 0;
                     } else {
                         if(++errorCount >= bssExperiment.config.allowedErrors) {
-                            return bssExperiment.leaveExperiment().then(function() {
-                                localStorage.setItem('justFinished', '1');
-                                bssExperiment.clearUserCache();
-                                return bssExperiment.stateFinished();
+                            return bssExperiment.storeUserResult(info.source.length - 1).then(function() {
+                                return bssExperiment.leaveExperiment().then(function() {
+                                    localStorage.setItem('justFinished', '1');
+                                    bssExperiment.clearUserCache();
+                                    return bssExperiment.stateFinished();
+                                });
                             });
                         }
                     }

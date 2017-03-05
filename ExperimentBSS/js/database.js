@@ -70,7 +70,21 @@
             $('body').data('user', dbUser);
             return userId;
         });
-    }
+    };
+
+    namespace.storeUserResult = function(length) {
+        return bssExperiment.getUser().then(function(user) {
+            var trans = database.transaction('user', 'readwrite');
+            trans.onerror = function(event) {
+                reject(trans.error);
+            };
+            trans.oncomplete = function(event) {
+                resolve(request.result);
+            };
+            user.rememberedItems = length;
+            var request = trans.objectStore('user').put(user);
+        });
+    };
 
     namespace.updateUser = function(data) {
         if(!data) {
@@ -129,12 +143,12 @@
             var trans = database.transaction('user', 'readonly');
             trans.onerror = function(event) {
                 reject(trans.error);
-            }
+            };
             trans.oncomplete = function(event) {
                 var dbUser = request.result;
                 $('body').data('user', dbUser);
                 resolve(request.result || null);
-            }
+            };
             var request = trans.objectStore('user').get(id);
         });
     }
@@ -144,10 +158,10 @@
             var trans = database.transaction('data', 'readwrite');
             trans.onerror = function(event) {
                 reject(trans.error);
-            }
+            };
             trans.oncomplete = function(event) {
                 resolve(request.result);
-            }
+            };
             var request = trans.objectStore('data').add(data);
         });
     };
