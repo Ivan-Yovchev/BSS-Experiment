@@ -24,6 +24,7 @@
         bar.animate(1, {
             duration: time
         }, function() {
+            $('#prepare').removeData('await');
             deferred.resolve();
         });
         return deferred.promise;
