@@ -84,5 +84,13 @@
                 }
             });
         });
+        $('#startMenuBeginTutorial').on('click', function () {
+            var deferred = $('#startMenu').data('await');
+            if (!deferred) {
+                return;
+            }
+            $('#startMenu').removeData('await');
+            deferred.resolve('tutorial');
+        });
     });
 })();

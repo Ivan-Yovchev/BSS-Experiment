@@ -268,7 +268,7 @@ button.button-privileged:hover, input[type="button"].button-privileged:hover, in
     top: 10vh;
     padding: 5vmin;
     margin: auto;
-    font-size: 30vh;
+    font-size: 20vh;
 }
 
 #experimentFinished {
@@ -333,4 +333,31 @@ button.button-privileged:hover, input[type="button"].button-privileged:hover, in
 
 #dataTable>tbody>tr.selected:hover>td {
     background: #99A;
+}
+
+.tutorial_text{
+    position: absolute;
+    bottom: 10vh;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+}
+
+.tutorial_text > p{
+    text-align: center;
+    margin: 5px;
+    font-size: 4vh;
+}
+
+.tutorial_text > #continue_to_second_screen {
+    margin-top: 1vh;
+}
+
+#second_tutorial_screen.tutorial_text {
+    bottom: 5vh;
+}
+
+#third_tutorial_screen > button{
+    margin-top: 2vh;
 }

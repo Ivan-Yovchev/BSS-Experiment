@@ -1,3 +1,407 @@
+<<<<<<< .mine
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Scientific Skills - Experimnet</title>
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="lib/jqueryui/jquery-ui.min.css" />
+    <script type="text/javascript" src="lib/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="lib/jqueryui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="lib/progressbar.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <!-- <script type="text/javascript" src="js/state.js"></script> -->
+    <!-- <script type="text/javascript" src="js/main.js"></script> -->
+    <!-- <script src="controller.js"></script> -->
+    <script type="text/javascript" src="js/page.js"></script>
+    <script type="text/javascript" src="js/debug.js"></script>
+    <script type="text/javascript" src="js/database.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/password.js"></script>
+    <script type="text/javascript" src="js/user.js"></script>
+    <script type="text/javascript" src="js/data.js"></script>
+    <script type="text/javascript" src="js/experiment.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/tutorial.js"></script>
+</head>
+<body>
+    <form id="createPasswordScreen" class="form-dialog text">
+        <div class="title">Create experimenter password</div>
+        <div class="error">
+            <div class="password-mismatch">Passwords do not match</div>
+            <div class="password-empty">You must enter a password</div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="createPassword">Enter password</label>
+            </div>
+            <div class="form-element">
+                <input type="password" name="password" id="createPassword" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="repeatPassword">Repeat password</label>
+            </div>
+            <div class="form-element">
+                <input type="password" name="repeatPassword" id="repeatPassword" />
+            </div>
+        </div>
+        <div class="form-row form-control-row">
+            <div class="form-control form-submit">
+                <input type="reset" value="Cancel" />
+            </div>
+            <div class="form-control form-reset">
+                <input type="submit" value="Create password" />
+            </div>
+        </div>
+    </form>
+    <form id="checkPasswordScreen" class="form-dialog text">
+        <div class="title">Enter experimenter password</div>
+        <div class="error">
+            <div class="password-mismatch">Password do not match</div>
+            <div class="password-empty">You must enter a password</div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="password">Enter password</label>
+            </div>
+            <div class="form-element">
+                <input type="password" name="password" id="password" />
+            </div>
+        </div>
+        <div class="form-row form-control-row">
+            <div class="form-control form-submit">
+                <input type="reset" value="Cancel" />
+            </div>
+            <div class="form-control form-reset">
+                <input type="submit" value="Identify" />
+            </div>
+        </div>
+    </form>
+    <form id="userForm" class="form-dialog text">
+        <div class="title">Enter participant data</div>
+        <div class="error">
+            <div class="name-empty">Participant's name is required</div>
+            <div class="group-empty">Participant's group is required</div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="userFormName">Name</label>
+            </div>
+            <div class="form-element">
+                <input type="text" name="name" id="userFormName" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label>Group</label>
+            </div>
+            <div class="form-element">
+                <div class="control-group">
+                    <input type="radio" name="group" value="A" id="userGroup_A" /><label for="userGroup_A">A</label>
+                    <input type="radio" name="group" value="B" id="userGroup_B" /><label for="userGroup_B">B</label>
+                    <input type="radio" name="group" value="C" id="userGroup_C" /><label for="userGroup_C">C</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row form-control-row">
+            <div class="form-control form-submit">
+                <input type="reset" value="Cancel" />
+            </div>
+            <div class="form-control form-reset">
+                <input type="submit" value="Next" />
+            </div>
+        </div>
+    </form>
+    <div class="modal-cover"></div>
+    <div id="mainMenu" class="button-list">
+        <button type="button" id="menuCreatePassword">Create/Change<br />Experimenter Password</button>
+        <button type="button" id="menuBeginExperiment">Begin Experiment</button>
+        <button type="button" id="menuExamineData">Examine Data</button>
+    </div>
+    <div id="debug">
+        <div class="loading-bar rotating"></div>
+        <p class="message text">Test</p>
+    </div>
+    <div id="startMenu" class="button-list vertical">
+        <div class="information">
+            <div class="information-row"><span class="information-label">Name: </span><span id="startMenuInfoUserName" class="information-value"></span></div>
+            <div class="information-row"><span class="information-label">Group: </span><span id="startMenuInfoGroup" class="information-value"></span></div>
+        </div>
+        <button type="button" id="startMenuBeginSequence">Start</button>
+        <button type="button" id="startMenuBeginTutorial">Tutorial</button>
+        <button type="button" id="startMenuCancel" class="button-privileged">Cancel</button>
+    </div>
+    <div id="prepare"></div>
+    <div id="symbolBox"></div>
+    <form id="symbolInput">
+        <input type="text" name="sequence" id="symbolInputEntry" class="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <input type="submit" />
+    </form>
+    <form id="experimentFinished" class="form-dialog text">
+        <div class="title">Experiment is over.<br />Please notify the experimenter!</div>
+        <div class="form-default-row">
+            <div class="form-control form-submit">
+                <input type="submit" value="Continue" class="button-privileged" />
+            </div>
+        </div>
+    </form>
+    <form id="experimentInterrupted" class="form-dialog text">
+        <div class="title">Experiment is interrupted.<br />Please notify the experimenter!</div>
+        <div class="form-default-row">
+            <div class="form-control form-submit">
+                <input type="submit" value="Continue" class="button-privileged" />
+            </div>
+        </div>
+    </form>
+    <div id="dataManipulator">
+        <div class="controls">
+            <div class="control-group">
+                <a href="javascript:void(0);" class="data-control" id="dataBack">Back</a>
+            </div>
+            <div class="control-group">
+                <a href="javascript:void(0);" class="data-control" id="dataMerge">Merge</a>
+                <a href="javascript:void(0);" class="data-control" id="dataExport">Export</a>
+            </div>
+        </div>
+        <table id="dataTable" border="0" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th class="select-all-cell"><input type="checkbox" id="dataTableSelectAll" /></th>
+                    <th class="title-cell">Name</th>
+                    <th class="title-cell">Group</th>
+                    <th class="title-cell">Examined on</th>
+                    <th class="title-cell">Presented</th>
+                    <th class="title-cell">Recalled</th>
+                    <th class="title-cell">Match</th>
+                    <th class="title-cell">Input start</th>
+                    <th class="title-cell">Input end</th>
+                    <th class="title-cell">Input time</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <a id="fileExport"></a>
+
+    <div id="first_tutorial_screen" class="tutorial_text">
+        <p>This loading bar indicates the time left unitl symbols start appearing on the screen.</p>
+        <p>There is one before each trial of the experiemnt.</p>
+        <p>Focus your attention on the loading bar as the time runs out the symbols start appearing in its place.</p>
+        <button id="continue_to_second_screen">Continue</button>
+    </div>
+
+    <div id="second_tutorial_screen" class="tutorial_text">
+        <p>After the loading bar has finished symbols like the ones shown above start appearing on the screen.</p>
+        <p>Each symbol appears for a brief moment.</p>
+        <p>Pay close attention and try to remember all the symbols and their order.</p>
+        <button id="continue_to_third_screen">Continue</button>
+    </div>
+
+    <div id="third_tutorial_screen" class="tutorial_text">
+        <p>After all symbols have been presented the input field shown above appears.</p>
+        <p>Here you have to type out all symbols you remember in the order they were presented.</p>
+        <p>Symbols are typed out without any spaces or special symbols between them.</p>
+        <p>After all symbols you remember have been typed out press [Enter] to continue.</p>
+        <p>All special symbols can be found on the number row of the keyboard.</p>
+        <button id="finish_tutorial">Finish Tutorial</button>
+    </div>
+
+</body>
+</html>
+||||||| .r20
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Scientific Skills - Experimnet</title>
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="lib/jqueryui/jquery-ui.min.css" />
+    <script type="text/javascript" src="lib/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="lib/jqueryui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="lib/progressbar.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <!-- <script type="text/javascript" src="js/state.js"></script> -->
+    <!-- <script type="text/javascript" src="js/main.js"></script> -->
+    <!-- <script src="controller.js"></script> -->
+    <script type="text/javascript" src="js/page.js"></script>
+    <script type="text/javascript" src="js/debug.js"></script>
+    <script type="text/javascript" src="js/database.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/password.js"></script>
+    <script type="text/javascript" src="js/user.js"></script>
+    <script type="text/javascript" src="js/data.js"></script>
+    <script type="text/javascript" src="js/experiment.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+    <form id="createPasswordScreen" class="form-dialog text">
+        <div class="title">Create experimenter password</div>
+        <div class="error">
+            <div class="password-mismatch">Passwords do not match</div>
+            <div class="password-empty">You must enter a password</div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="createPassword">Enter password</label>
+            </div>
+            <div class="form-element">
+                <input type="password" name="password" id="createPassword" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="repeatPassword">Repeat password</label>
+            </div>
+            <div class="form-element">
+                <input type="password" name="repeatPassword" id="repeatPassword" />
+            </div>
+        </div>
+        <div class="form-row form-control-row">
+            <div class="form-control form-submit">
+                <input type="reset" value="Cancel" />
+            </div>
+            <div class="form-control form-reset">
+                <input type="submit" value="Create password" />
+            </div>
+        </div>
+    </form>
+    <form id="checkPasswordScreen" class="form-dialog text">
+        <div class="title">Enter experimenter password</div>
+        <div class="error">
+            <div class="password-mismatch">Password do not match</div>
+            <div class="password-empty">You must enter a password</div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="password">Enter password</label>
+            </div>
+            <div class="form-element">
+                <input type="password" name="password" id="password" />
+            </div>
+        </div>
+        <div class="form-row form-control-row">
+            <div class="form-control form-submit">
+                <input type="reset" value="Cancel" />
+            </div>
+            <div class="form-control form-reset">
+                <input type="submit" value="Identify" />
+            </div>
+        </div>
+    </form>
+    <form id="userForm" class="form-dialog text">
+        <div class="title">Enter participant data</div>
+        <div class="error">
+            <div class="name-empty">Participant's name is required</div>
+            <div class="group-empty">Participant's group is required</div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label for="userFormName">Name</label>
+            </div>
+            <div class="form-element">
+                <input type="text" name="name" id="userFormName" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-label">
+                <label>Group</label>
+            </div>
+            <div class="form-element">
+                <div class="control-group">
+                    <input type="radio" name="group" value="A" id="userGroup_A" /><label for="userGroup_A">A</label>
+                    <input type="radio" name="group" value="B" id="userGroup_B" /><label for="userGroup_B">B</label>
+                    <input type="radio" name="group" value="C" id="userGroup_C" /><label for="userGroup_C">C</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row form-control-row">
+            <div class="form-control form-submit">
+                <input type="reset" value="Cancel" />
+            </div>
+            <div class="form-control form-reset">
+                <input type="submit" value="Next" />
+            </div>
+        </div>
+    </form>
+    <div class="modal-cover"></div>
+    <div id="mainMenu" class="button-list">
+        <button type="button" id="menuCreatePassword">Create/Change<br />Experimenter Password</button>
+        <button type="button" id="menuBeginExperiment">Begin Experiment</button>
+        <button type="button" id="menuExamineData">Examine Data</button>
+    </div>
+    <div id="debug">
+        <div class="loading-bar rotating"></div>
+        <p class="message text">Test</p>
+    </div>
+    <div id="startMenu" class="button-list vertical">
+        <div class="information">
+            <div class="information-row"><span class="information-label">Name: </span><span id="startMenuInfoUserName" class="information-value"></span></div>
+            <div class="information-row"><span class="information-label">Group: </span><span id="startMenuInfoGroup" class="information-value"></span></div>
+        </div>
+        <button type="button" id="startMenuBeginSequence">Start</button>
+        <button type="button" id="startMenuBeginTutorial">Tutorial</button>
+        <button type="button" id="startMenuCancel" class="button-privileged">Cancel</button>
+    </div>
+    <div id="prepare"></div>
+    <div id="symbolBox"></div>
+    <form id="symbolInput">
+        <input type="text" name="sequence" id="symbolInputEntry" class="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <input type="submit" />
+    </form>
+    <form id="experimentFinished" class="form-dialog text">
+        <div class="title">Experiment is over.<br />Please notify the experimenter!</div>
+        <div class="form-default-row">
+            <div class="form-control form-submit">
+                <input type="submit" value="Continue" class="button-privileged" />
+            </div>
+        </div>
+    </form>
+    <form id="experimentInterrupted" class="form-dialog text">
+        <div class="title">Experiment is interrupted.<br />Please notify the experimenter!</div>
+        <div class="form-default-row">
+            <div class="form-control form-submit">
+                <input type="submit" value="Continue" class="button-privileged" />
+            </div>
+        </div>
+    </form>
+    <div id="dataManipulator">
+        <div class="controls">
+            <div class="control-group">
+                <a href="javascript:void(0);" class="data-control" id="dataBack">Back</a>
+            </div>
+            <div class="control-group">
+                <a href="javascript:void(0);" class="data-control" id="dataMerge">Merge</a>
+                <a href="javascript:void(0);" class="data-control" id="dataExport">Export</a>
+            </div>
+        </div>
+        <table id="dataTable" border="0" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th class="select-all-cell"><input type="checkbox" id="dataTableSelectAll" /></th>
+                    <th class="title-cell">Name</th>
+                    <th class="title-cell">Group</th>
+                    <th class="title-cell">Examined on</th>
+                    <th class="title-cell">Presented</th>
+                    <th class="title-cell">Recalled</th>
+                    <th class="title-cell">Match</th>
+                    <th class="title-cell">Input start</th>
+                    <th class="title-cell">Input end</th>
+                    <th class="title-cell">Input time</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <a id="fileExport" />
+</body>
+</html>
+=======
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -183,3 +587,4 @@
     <a id="fileExport" />
 </body>
 </html>
+>>>>>>> .r23

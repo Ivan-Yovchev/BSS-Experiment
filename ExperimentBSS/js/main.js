@@ -25,7 +25,11 @@ $(function() {
     }
 
     function startMenuActionHandler(action) {
-        switch(action) {
+        switch (action) {
+            case 'tutorial':
+                return bssExperiment.beginTutorial().then(function () {
+                    return bssExperiment.stateStartMenu().then(startMenuActionHandler);
+                });
             case 'cancel':
                 return bssExperiment.enterExperimenterState().then(function() {
                     return bssExperiment.stateUserForm(true).then(function(accept) {
