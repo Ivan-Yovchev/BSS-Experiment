@@ -18,7 +18,7 @@
         /* The preparation time between each trial */
         preparationTime: 2000, /* in milliseconds */
         /* How long is the pause between two symbols shown */
-        symbolInBetweentime: 900, /* in milliseconds */
+        symbolInBetweentime: 600, /* in milliseconds */
         /* How long the user will see a symbol */
         symbolTime: 900, /* in milliseconds */
         /* Maximum number of errors before experiment is over */
