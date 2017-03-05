@@ -27,8 +27,10 @@
         $('#mainMenu').show();
         if(!bssExperiment.hasExperimentPassword()) {
             $('#menuBeginExperiment').hide();
+            $('#menuExamineData').hide();
         } else {
             $('#menuBeginExperiment').show();
+            $('#menuExamineData').show();
         }
     }
 
