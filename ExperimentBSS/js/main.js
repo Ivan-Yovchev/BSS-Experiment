@@ -87,7 +87,7 @@ $(function() {
                     inputStart: inputStart + '',
                     inputEnd: inputEnd + ''
                 }).then(function() {
-                    if(bssExperiment.freeRecallCompare(info.source, info.input)) {
+                    if(info.source === info.input) {
                         ++length;
                         errorCount = 0;
                     } else {

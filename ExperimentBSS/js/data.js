@@ -47,7 +47,7 @@
                 var userSequenceCell = tableRow.insertCell(5);
                 userSequenceCell.textContent = row.userString;
                 var matchCell = tableRow.insertCell(6);
-                matchCell.textContent = bssExperiment.freeRecallCompare(row.originalString, row.userString) ? 'Yes' : 'No';
+                matchCell.textContent = row.originalString === row.userString ? 'Yes' : 'No';
                 var inputStartCell = tableRow.insertCell(7);
                 inputStartCell.textContent = row.inputStart;
                 var inputEndCell = tableRow.insertCell(8);
