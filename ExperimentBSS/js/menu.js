@@ -77,8 +77,12 @@
             if(!deferred) {
                 return;
             }
-            $('#startMenu').removeData('await');
-            deferred.resolve('cancel');
+            return bssExperiment.enterExperimenterState().then(function(identified) {
+                if(identified) {
+                    $('#startMenu').removeData('await');
+                    deferred.resolve('cancel');
+                }
+            });
         });
     });
 })();
